@@ -1,6 +1,7 @@
 package org.nodexy.moneywise;
 
 import java.time.LocalDate;
+import java.lang.StringBuilder;
 
 import static org.nodexy.moneywise.DateUtils.getLastDayOfMonth;
 import static org.nodexy.moneywise.DateUtils.weekdaysUntil;
@@ -24,7 +25,15 @@ public class MainApp {
         System.out.println("\tToday's date: "+now);
         System.out.println("\tNumber of days till month end: "+(DateUtils.getLastDayOfMonth(now).getDayOfMonth()-now.getDayOfMonth()));
         int rem = weekdaysUntil(now,getLastDayOfMonth(now));
-        System.out.println("\tNumber of work days remaining: "+rem+" => "+rem/5+" weeks + "+rem%5+" days");
+        int weeks_rem = rem/5, days_rem = rem%5;
+        StringBuilder sb = new StringBuilder("\tNumber of work days remaining: ").append(rem);
+        if (weeks_rem>0) {
+        	sb.append(" => "+weeks_rem+" weeks");
+        	if (days_rem>0)
+        		sb.append(days_rem+" days");
+        }
+
+        System.out.println(sb.toString());
         
         System.out.println("Transport fare still due for this month ("+now.getMonth()+"):");
         System.out.println(String.format("\tR %1.2f - via Fourways", calculateFareRemaining(dailyFareViaFourways)));

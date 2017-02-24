@@ -25,12 +25,18 @@ public class MainApp {
         System.out.println("\tNumber of days till month end: "+(DateUtils.getLastDayOfMonth(now).getDayOfMonth()-now.getDayOfMonth()));
         int rem = weekdaysUntil(now,getLastDayOfMonth(now));
         System.out.println("\tNumber of work days remaining: "+rem+" => "+rem/5+" weeks + "+rem%5+" days");
+        
         System.out.println("Transport fare still due for this month ("+now.getMonth()+"):");
         System.out.println(String.format("\tR %1.2f - via Fourways", calculateFareRemaining(dailyFareViaFourways)));
         System.out.println(String.format("\tR %1.2f - via Douglas", calculateFareRemaining(dailyFareViaDouglas)));
         System.out.println("Transport cost for whole month ("+now.getMonth()+"):");
         System.out.println(String.format("\tR %1.2f - via Fourways", calculateFare(dailyFareViaFourways, now.withDayOfMonth(1),getLastDayOfMonth(now))));
         System.out.println(String.format("\tR %1.2f - via Douglas", calculateFare(dailyFareViaDouglas, now.withDayOfMonth(1),getLastDayOfMonth(now))));
+
+        LocalDate nxtMon = now.plusMonths(1);
+        System.out.println("Transport cost for whole month ("+nxtMon.getMonth()+"):");
+        System.out.println(String.format("\tR %1.2f - via Fourways", calculateFare(dailyFareViaFourways, nxtMon.withDayOfMonth(1),getLastDayOfMonth(nxtMon))));
+        System.out.println(String.format("\tR %1.2f - via Douglas", calculateFare(dailyFareViaDouglas, nxtMon.withDayOfMonth(1),getLastDayOfMonth(nxtMon))));
     }
     static double calculateFareRemaining(double dailyFare) {
         LocalDate today = LocalDate.now();

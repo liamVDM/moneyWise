@@ -11,14 +11,15 @@ import static org.nodexy.moneywise.DateUtils.weekdaysUntil;
  */
 public class MainApp {
     private static final double[]
-            fare_taxi_1way_viaFourways = {15,14,11},
+            fare_taxi_1way_viaFourways = {15,14,12},
             fare_taxi_1way_viaDouglas = {15,16};
     public static void main(String[] args) {
         taxiFareCalc();
     }
     static void taxiFareCalc() {
-        double dailyFareViaFourways = sigma(fare_taxi_1way_viaFourways)*2; // return cost
-        double dailyFareViaDouglas = sigma(fare_taxi_1way_viaDouglas)*2; // return cost
+        /* return costs*/
+        double dailyFareViaFourways = sigma(fare_taxi_1way_viaFourways)*2;
+        double dailyFareViaDouglas = sigma(fare_taxi_1way_viaDouglas)*2;
 
         LocalDate now = LocalDate.now();
         System.out.println("Month stats:");
@@ -30,7 +31,7 @@ public class MainApp {
         if (weeks_rem>0) {
         	sb.append(" => "+weeks_rem+" weeks");
         	if (days_rem>0)
-        		sb.append(days_rem+" days");
+        		sb.append(", "+days_rem+" days");
         }
 
         System.out.println(sb.toString());

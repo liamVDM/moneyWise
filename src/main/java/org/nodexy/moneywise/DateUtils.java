@@ -1,8 +1,8 @@
 package org.nodexy.moneywise;
 
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.time.*;
+import java.util.Date;
 
 /**
  * Created by phoenix on 21/12/16.
@@ -29,5 +29,29 @@ public class DateUtils {
     public static boolean isWeekday(DayOfWeek day) {
         assert day!=null;
         return day.getValue() < DayOfWeek.SATURDAY.getValue();
+    }
+
+    /**
+     * sets the time to midnight of a given LocalDate.
+     * Uses Central African Time by default
+     * @param ld
+     * @return
+     */
+    static Date localDate2Date(LocalDate ld, ZoneOffset zoneOffset) {
+        return localDateTime2Date(LocalDateTime.of(ld, LocalTime.of(0,0,0)), zoneOffset);
+    }
+    static Date localDate2Date(LocalDate ld) {
+        return localDate2Date(ld, ZoneOffset.of("+0200")); // +0200 -> CAT
+    }
+    /**
+     * Uses Central African Time by default. Code that only works in Africa, yeah!!
+     * @param ldt
+     * @return
+     */
+    static Date localDateTime2Date(LocalDateTime ldt, ZoneOffset zoneOffset) {
+        return Date.from(ldt.toInstant(zoneOffset));
+    }
+    static Date localDateTime2Date(LocalDateTime ldt) {
+        return localDateTime2Date(ldt, ZoneOffset.of("+0200")); // +0200 -> CAT
     }
 }

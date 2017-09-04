@@ -11,8 +11,11 @@ import java.time.LocalTime
  * Created by phoenix on 21/12/16.
  */
 object MainApp {
-    private val fare_taxi_1way_viaFourways = doubleArrayOf(15.0, 15.0, 12.0)
-    private val fare_taxi_1way_viaDouglas = doubleArrayOf(15.0, 16.0)
+    private val options = mapOf(
+            Pair("using the car", doubleArrayOf(64.0)),
+            Pair("via Fourways", doubleArrayOf(15.0, 15.0, 12.0)),
+            Pair("via Douglas Dale", doubleArrayOf(15.0, 17.0))
+    )
     @JvmStatic fun main(args: Array<String>) {
         taxiFareCalc()
     }
@@ -27,8 +30,6 @@ object MainApp {
 
     internal fun taxiFareCalc() {
         /* return costs*/
-        val dailyFareViaFourways = sigma(fare_taxi_1way_viaFourways) * 2
-        val dailyFareViaDouglas = sigma(fare_taxi_1way_viaDouglas) * 2
 
         val now = LocalDate.now()
 
@@ -39,8 +40,10 @@ object MainApp {
         val daysToFriday = nextFriday().dayOfMonth - now.dayOfMonth + (1-currDayFactor())
         println("\tDays left for the week: $daysToFriday")
         println("\tFares for this week:")
-        println("\t\tR ${calculateWeeklyStats(dailyFareViaFourways).format(2)} - via Fourways")
-        println("\t\tR ${calculateWeeklyStats(dailyFareViaDouglas).format(2)} - via Douglas")
+
+        options.forEach { t, u ->
+            println("\t\tR ${calculateWeeklyStats(sigma(u) * 2).format(2)} - $t")
+        }
 
         println("Month stats:")
         println("\tNumber of days till month end: $daysLeft")
@@ -56,17 +59,20 @@ object MainApp {
         println(sb.toString())
 
         println("Transport fare still due for this month (" + now.month + "):")
-        println("\tR ${calculateFareRemaining(dailyFareViaFourways).format(2)} - via Fourways")
-        println("\tR ${calculateFareRemaining(dailyFareViaDouglas).format(2)} - via Douglas")
+        options.forEach { t, u ->
+            println("\t\tR ${calculateFareRemaining(sigma(u) * 2).format(2)} - $t")
+        }
         println("Transport cost for whole month (${now.month}):")
-        println("\tR ${calculateFare(dailyFareViaFourways, now.withDayOfMonth(1), getLastDayOfMonth(now)).format(2)} - via Fourways")
-        println("\tR ${calculateFare(dailyFareViaDouglas, now.withDayOfMonth(1), getLastDayOfMonth(now)).format(2)} - via Douglas")
+        options.forEach { t, u ->
+            println("\t\tR ${calculateFare(sigma(u) * 2, now.withDayOfMonth(1), getLastDayOfMonth(now)).format(2)} - $t")
+        }
 
         val nxtMon = now.plusMonths(1)
         println("Transport cost for whole month (" + nxtMon.month + "):")
         println("\tNr of weekdays: ${weekdaysUntil(nxtMon.withDayOfMonth(1), getLastDayOfMonth(nxtMon))}")
-        println("\tR ${calculateFare(dailyFareViaFourways, nxtMon.withDayOfMonth(1), getLastDayOfMonth(nxtMon)).format(2)} - via Fourways")
-        println("\tR ${calculateFare(dailyFareViaDouglas, nxtMon.withDayOfMonth(1), getLastDayOfMonth(nxtMon)).format(2)} - via Douglas")
+        options.forEach { t, u ->
+            println("\t\tR ${calculateFare(sigma(u) * 2, nxtMon.withDayOfMonth(1), getLastDayOfMonth(nxtMon)).format(2)} - $t")
+        }
     }
 
     internal fun calculateWeeklyStats(dailyFare: Double): Double {

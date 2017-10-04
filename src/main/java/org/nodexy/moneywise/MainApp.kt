@@ -2,10 +2,10 @@ package org.nodexy.moneywise
 
 import org.nodexy.moneywise.DateUtils.*
 import java.time.LocalDate
-import java.lang.StringBuilder
 
 import java.time.DayOfWeek
 import java.time.LocalTime
+import kotlin.text.StringBuilder
 
 /**
  * Created by phoenix on 21/12/16.
@@ -62,17 +62,22 @@ object MainApp {
         options.forEach { t, u ->
             println("\t\tR ${calculateFareRemaining(sigma(u) * 2).format(2)} - $t")
         }
-        println("Transport cost for whole month (${now.month}):")
-        options.forEach { t, u ->
-            println("\t\tR ${calculateFare(sigma(u) * 2, now.withDayOfMonth(1), getLastDayOfMonth(now)).format(2)} - $t")
-        }
 
-        val nxtMon = now.plusMonths(1)
-        println("Transport cost for whole month (" + nxtMon.month + "):")
-        println("\tNr of weekdays: ${weekdaysUntil(nxtMon.withDayOfMonth(1), getLastDayOfMonth(nxtMon))}")
-        options.forEach { t, u ->
-            println("\t\tR ${calculateFare(sigma(u) * 2, nxtMon.withDayOfMonth(1), getLastDayOfMonth(nxtMon)).format(2)} - $t")
+        println("****************************************************************")
+        LongRange(0, 2).onEach {i->
+            println(monthlyAnalysis(now.plusMonths(i)))
         }
+        println("****************************************************************")
+    }
+
+    internal fun monthlyAnalysis(date: LocalDate): String {
+        val msg = StringBuilder()
+        msg.append("Transport cost for whole month (${date.month}):")
+        msg.append("\n\tNr of weekdays: ${weekdaysUntil(date.withDayOfMonth(1), getLastDayOfMonth(date))}")
+        options.forEach { t, u ->
+            msg.append("\n\t\tR ${calculateFare(sigma(u) * 2, date.withDayOfMonth(1), getLastDayOfMonth(date)).format(2)} - $t")
+        }
+        return msg.toString()
     }
 
     internal fun calculateWeeklyStats(dailyFare: Double): Double {

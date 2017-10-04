@@ -99,8 +99,7 @@ public class DateUtilsTest {
         assertEquals(5,weekdaysUntil(LocalDate.now(),LocalDate.now().plusDays(7)));
         assertEquals(8,weekdaysUntil(LocalDate.of(2016, Month.DECEMBER,21), LocalDate.of(2017, Month.JANUARY,1)));
     }
-
-
+    
     double calculateFareRemaining(double dailyFare) {
         LocalDate today = LocalDate.now();
         return calculateFare(dailyFare,today,getLastDayOfMonth(today));

@@ -44,7 +44,7 @@ public class DateUtils {
         return localDate2Date(ld, ZoneOffset.of("+0200")); // +0200 -> CAT
     }
     /**
-     * Uses Central African Time by default. Code that only works in Africa, yeah!!
+     * Uses Central African Time by default.
      * @param ldt
      * @return
      */

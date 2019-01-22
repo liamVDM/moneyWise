@@ -18,6 +18,18 @@ public class DateUtils {
         return count;
     }
 
+    public static int daysUntil(LocalDate startDate, LocalDate endDate) {
+        int count = 0;
+        for (LocalDate day = startDate; day.isBefore(endDate); day = day.plusDays(1)) {
+            count++;
+        }
+        return count;
+    }
+
+    public static LocalDate getFirstDayOfMonth(LocalDate date) {
+        return date.plusDays(-1 * (long) date.getDayOfMonth() + 1);
+    }
+
     public static LocalDate getLastDayOfMonth(LocalDate date) {
         assert (date!=null);
         int dayOfMonth = date.getDayOfMonth();
